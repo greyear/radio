@@ -20,6 +20,17 @@ class RadioTest {
     }
 
     @ParameterizedTest
+    @CsvFileSource(resources = "/dataCurrentStationWithSpecificNumOfStations.csv")
+    void setCurrentStationNumberTestWithSpecificNumOfStations(int numberOfStations, int input, int expected) {
+        Radio radio = new Radio (numberOfStations);
+
+        radio.setCurrentStationNumber(input);
+        int actual = radio.getCurrentStationNumber();
+
+        assertEquals (expected, actual);
+    }
+
+    @ParameterizedTest
     @CsvFileSource(resources = "/dataNextStation.csv")
     void nextStationTest(int input, int expected) {
         Radio radio = new Radio();
@@ -32,9 +43,32 @@ class RadioTest {
     }
 
     @ParameterizedTest
+    @CsvFileSource(resources = "/dataNextStationWithSpecificNumOfStations.csv")
+    void nextStationTestWithSpecificNumOfStations(int numberOfStations, int input, int expected) {
+        Radio radio = new Radio(numberOfStations);
+
+        radio.setCurrentStationNumber(input);
+        radio.nextStation();
+        int actual = radio.getCurrentStationNumber();
+
+        assertEquals(expected, actual);
+    }
+
     @CsvFileSource(resources = "/dataPrevStation.csv")
     void prevStationTest(int input, int expected) {
         Radio radio = new Radio();
+
+        radio.setCurrentStationNumber(input);
+        radio.prevStation();
+        int actual = radio.getCurrentStationNumber();
+
+        assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/dataPrevStationWithSpecificNumOfStations.csv")
+    void prevStationTestWithSpecificNumOfStations(int numberOfStations, int input, int expected) {
+        Radio radio = new Radio(numberOfStations);
 
         radio.setCurrentStationNumber(input);
         radio.prevStation();
@@ -48,14 +82,14 @@ class RadioTest {
         Radio radio = new Radio();
 
         assertEquals(0, radio.getCurrentVolume());
-        for (int newVolume = 1; newVolume <= 10; newVolume++) {
+        for (int newVolume = 1; newVolume <= 100; newVolume++) {
             radio.plusVolume();
             int actual = radio.getCurrentVolume();
             assertEquals(newVolume, actual);
         }
         radio.plusVolume();
-        assertEquals(10, radio.getCurrentVolume());
-        for (int newVolume = 9; newVolume >= 0; newVolume--) {
+        assertEquals(100, radio.getCurrentVolume());
+        for (int newVolume = 99; newVolume >= 0; newVolume--) {
             radio.minusVolume();
             int actual = radio.getCurrentVolume();
             assertEquals(newVolume, actual);
